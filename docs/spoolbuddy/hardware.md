@@ -21,6 +21,16 @@ description: What you need to build a SpoolBuddy
 
 ---
 
+## :material-barcode-scan: Optional: USB Barcode Scanner
+
+An optional USB barcode scanner lets SpoolBuddy identify new filament by scanning the box's retail barcode — see [Barcode Scanner](barcode-scanner.md) for setup and usage.
+
+| Component | Recommendation | Notes |
+|----------|----------------|-------|
+| **Barcode scanner** | Any USB scanner with **HID keyboard emulation** (the default mode on nearly all of them) | Plug into a free USB port; auto-detected, hot-plug supported. A model with a presentation / auto-sense mode (fires when a barcode is presented, no trigger pull) makes the flow hands-free — e.g. the SB Components [Barcode Breakout Board](https://shop.sb-components.co.uk/products/barcode-breakout), which is compact enough to mount inside the base, auto-scans via its IR sensor, and has an auto-on LED for low light. |
+
+---
+
 ## :material-memory: NFC Tags
 
 SpoolBuddy can interact with:

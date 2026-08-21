@@ -179,7 +179,19 @@ Custom materials work just like built-in ones for inventory tracking, usage hist
 | **Low-stock threshold (this spool)** | Per-spool override of the global low-stock percentage. Leave blank to use whatever's set in the inventory's stat-card threshold control (default 20 %). Useful for marking *production* spools to alert earlier (e.g. 50 %) while letting *prototype* spools stay quiet until much later. The override applies to the stat-card "Low Stock" count, the "Low Stock" filter and the [Low Filament notification](notifications.md#printer-events). |
 | **Storage Location** | Physical shelf, drawer, or drybox from your [locations catalog](storage-locations.md). Pick an existing entry from the dropdown or type a new name and click **Add**. |
 | **Last dried** | When the spool was last dried. Filled in by AMS drying; set it here, or click **Now**, for a spool dried in an external dryer. Shown when editing a spool. See [Drying Record](#drying-record). |
+| **Barcode** | The spool's retail barcode (UPC/EAN) or manufacturer SKU. Filled in automatically by [SpoolBuddy's barcode scanner](../spoolbuddy/barcode-scanner.md), or enter one manually to teach the lookup a mapping ahead of time — a future scan of the same code then matches this spool instantly. Sibling codes discovered for the same product (other package sizes, the refill-pack barcode, the manufacturer SKU) are listed underneath as *Also matches*, and spools whose own barcode is the no-spool refill variant show a **Refill** badge. |
 | **Note** | Free-text notes about the spool |
+
+### Barcodes
+
+Barcodes are first-class spool data:
+
+- **Where they come from** — scanning a box on [SpoolBuddy](../spoolbuddy/barcode-scanner.md), or typing one into the spool form's **Barcode** field.
+- **How they resolve** — your own inventory first (instant, offline, exact — including sibling codes and archived spools), then the [Open Filament Database](https://openfilamentdatabase.org), then [SpoolmanDB-Community](https://github.com/Icezaza2543/SpoolmanDB-Community); the two external lookups are gated by the [Scan-to-Add Barcode Lookup](#scan-to-add-barcode-lookup) setting.
+- **In the inventory table** — an optional, sortable **Barcode** column (hidden by default; enable it from the column picker), plus the **Refill** badge on refill spools.
+- **CSV** — the barcode column round-trips through [CSV import/export](#csv-import-export). Values are canonicalized on import exactly like a form edit, files without the column import cleanly, and re-imported spools still resolve on a future scan.
+
+Barcode scanning works identically in Built-in Inventory and Spoolman modes — in Spoolman mode the barcode is stored on the Spoolman spool via extra fields.
 
 ### Printers Tab
 
@@ -910,6 +922,10 @@ Choose between:
 
 - **Built-in Inventory** — Use Bambuddy's spool management
 - **Spoolman** — Use external Spoolman integration
+
+#### Scan-to-Add Barcode Lookup
+
+Gates the outbound lookups (Open Filament Database, SpoolmanDB-Community) used by [barcode scanning](../spoolbuddy/barcode-scanner.md) — on every path, including saves that cross-reference sibling codes. Default **on**. With it off, nothing is ever downloaded: manual barcode entry and matching against your own inventory always work, fully offline. External lookups only carry the scanned code itself.
 
 #### Auto-add unknown RFID spools
 

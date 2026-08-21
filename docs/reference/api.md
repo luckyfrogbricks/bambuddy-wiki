@@ -914,6 +914,57 @@ At least one of `tray_uuid` or `tag_uid` must be supplied. Values are normalised
 !!! note "Required scope"
     This endpoint accepts **inventory read** *or* **inventory update** access — for API keys, either the **Read Status** scope *or* the **Manage Inventory** scope. This lets a key that can already create, update, and delete spools look one up to dedupe an NFC scan. (Listing spools and fetching a spool by id still require **Read Status**.)
 
+### Look Up Barcode
+
+Resolve a scanned or typed barcode (UPC/EAN/GTIN, or a manufacturer SKU) to filament fields. Checks the user's own inventory first — any spool previously created from this barcode or one of its sibling codes, archived spools included — before falling back to the community databases (Open Filament Database, then SpoolmanDB-Community; both gated by the **Scan-to-Add Barcode Lookup** setting).
+
+```http
+GET /inventory/barcode/{barcode}
+```
+
+The code is canonicalized before matching (digits-only with leading zeros stripped for numeric codes, trimmed and uppercased for alphanumeric SKUs), so a UPC-A and its leading-zero EAN-13 form resolve identically. The path value is capped at 64 characters.
+
+**Response:**
+```json
+{
+  "enabled": true,
+  "matched": true,
+  "source": "inventory",
+  "barcode": "6938936716785",
+  "material": "PLA",
+  "brand": "Polymaker",
+  "subtype": "PolyTerra Matte",
+  "color_name": "Charcoal Black",
+  "rgba": "3B3B3FFF",
+  "label_weight": 1000,
+  "nozzle_temp_min": 190,
+  "nozzle_temp_max": 230,
+  "is_refill": false,
+  "linked_codes": [
+    { "code": "6938936716786", "kind": "gtin", "is_refill": true }
+  ]
+}
+```
+
+`source` is `"inventory"`, `"ofd"`, `"spoolmandb-community"`, or `null` (no match). `enabled` echoes the lookup setting. `linked_codes` lists the sibling codes (other package sizes, the refill-pack barcode, the manufacturer SKU) known for the same product.
+
+### Catalog Search
+
+Free-text search across the user's inventory and both community catalogs — powers SpoolBuddy's **Find This Filament** screen for barcodes no database recognizes.
+
+```http
+GET /inventory/barcode/catalog-search
+```
+
+**Query Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `q` | string | Search text (2–100 chars), token-AND matched against brand, material, subtype, and color name |
+| `limit` | int | Maximum rows (1–100, default 25) |
+
+Returns rows shaped like the lookup response's filament fields plus a `source` tag and the sibling `codes` to persist if the row is chosen. Own-inventory rows rank first. Both endpoints require **inventory read** access (**Read Status** scope).
+
 ---
 
 ## :material-chart-line: Statistics
