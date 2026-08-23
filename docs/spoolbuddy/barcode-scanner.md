@@ -51,8 +51,6 @@ However the code arrives (hardware scan or **Enter Code Manually**), Bambuddy cl
 
 The confirm screen labels where the match came from ("Matched in your inventory", "Matched in Open Filament Database", …) so you know how much to trust the prefilled fields. A **Location** row pre-selects wherever your last-added spool went (tap it to pick another location or create one in place), and one tap creates the spool with the RFID tag, weight, and codes on a single record. When the databases also know the same package's sibling code (the SKU printed next to the barcode, or vice versa), it's stored too — so either code on the box matches this roll on a future scan.
 
-After **Add to Inventory**, lifting the roll off the scale within a few seconds turns the card's Close button into a short **"Closing in 3…"** countdown — tap it to close now, or the **×** to keep the card open.
-
 ### No match? Find This Filament
 
 Barcode coverage is spotty per brand, and Amazon boxes often carry an Amazon code instead of the retail barcode (check the box for a second barcode). When no database recognizes a code, the primary action is **Find This Filament**: search your inventory and both community catalogs by text (e.g. `polymaker charcoal`). Each result is one **purchasable package** — the 0.5 kg, 1 kg, and 3 kg boxes of the same color appear as separate rows with their weights — and the disclosure arrow on a row expands its full details, including every known code with a per-code refill marker, so near-identical results are tellable apart. Select a row and tap **Confirm**: the scanned code is linked to it, so the *next* scan of that code resolves instantly. **Add Basic Spool** and manual entry remain as fallbacks, and the scanned code is kept on the spool either way.
