@@ -20,6 +20,9 @@ Any USB barcode scanner that acts as a keyboard (**USB HID keyboard emulation** 
 !!! tip "Hands-free scanning"
     A scanner with a presentation / auto-sense mode (it fires when a barcode is presented, no trigger pull) makes the flow completely hands-free — set the roll down, hold the box up, done. See [Hardware Requirements](hardware.md#optional-usb-barcode-scanner) for a tested pick.
 
+!!! tip "Optional: AIM symbology IDs for stricter classification"
+    If your scanner can be configured to transmit **AIM symbology identifiers** (a `]E0`-style prefix; on the DE2120 it's a configuration barcode in the manual, often labeled *Code ID* → *AIM ID*), SpoolBuddy uses it to tell a true retail EAN/UPC read apart from, say, a Code 128 label whose digits merely *look* like a barcode number — so only genuine retail barcodes land in a spool's GTIN field. Entirely optional: without the prefix, classification falls back to the (already checksum-validated) heuristic.
+
 ### Enabling and testing
 
 Open **Settings → Scanner** on the SpoolBuddy touchscreen:
