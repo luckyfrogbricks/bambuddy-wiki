@@ -41,6 +41,8 @@ With the scanner enabled, tapping **Add to Inventory** on the Dashboard opens **
 
 Scanning is order-independent: you can also scan **before** the roll lands on the scale (or for a roll with no NFC tag) — the resolved filament shows immediately and the tag/weight chips fill in live when the roll arrives.
 
+Two kinds of scans are deliberately ignored: **QR codes** (a 2D scanner reads them like any barcode, but their payload is a URL — the QR on a Bambu spool, for instance — never a product code), and **any scan that arrives while a resolved screen is already up** (confirm, no-match, or Find) — a presentation-mode scanner re-fires on the same box, and a stray re-read must not wipe out your in-progress edits or Find selection. Tap **Rescan** (or close the card) to scan again.
+
 However the code arrives (hardware scan or **Enter Code Manually**), Bambuddy classifies it — a retail **GTIN** barcode, an Amazon **ASIN**, a manufacturer **SKU**/article number, or your own custom code — and resolves it in this order:
 
 1. **Your own inventory** — any code stored on one of your rolls (its GTIN, SKU, ASIN, or a custom code) matches instantly and offline; the most recently added roll provides the template, so your latest edits carry forward. Archived spools count too.
