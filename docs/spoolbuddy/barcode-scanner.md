@@ -38,21 +38,23 @@ With the scanner enabled, tapping **Add to Inventory** on the Dashboard opens **
 
 Scanning is order-independent: you can also scan **before** the roll lands on the scale (or for a roll with no NFC tag) — the resolved filament shows immediately and the tag/weight chips fill in live when the roll arrives.
 
-However the code arrives (hardware scan or **Enter Code Manually**), Bambuddy resolves it in this order:
+However the code arrives (hardware scan or **Enter Code Manually**), Bambuddy classifies it — a retail **GTIN** barcode, an Amazon **ASIN**, a manufacturer **SKU**/article number, or your own custom code — and resolves it in this order:
 
-1. **Your own inventory** — a barcode you've scanned before matches instantly and offline, including *sibling* codes learned from earlier scans (the refill-pack barcode, other package sizes, the manufacturer SKU). Archived spools count too.
+1. **Your own inventory** — any code stored on one of your rolls (its GTIN, SKU, ASIN, or a custom code) matches instantly and offline; the most recently added roll provides the template, so your latest edits carry forward. Archived spools count too.
 2. **[Open Filament Database](https://openfilamentdatabase.org)** — a community database of retail filament barcodes. Queried only when your own inventory has no match, and only if the lookup setting (below) is enabled.
 3. **[SpoolmanDB-Community](https://github.com/Icezaza2543/SpoolmanDB-Community)** — a much broader community filament catalog with a smaller set of attached barcodes. Checked when the Open Filament Database has no match, under the same setting.
 
-The confirm screen labels where the match came from ("Matched in your inventory", "Matched in Open Filament Database", …) so you know how much to trust the prefilled fields, and one tap creates the spool with the RFID tag, weight, and barcode on a single record.
+The confirm screen labels where the match came from ("Matched in your inventory", "Matched in Open Filament Database", …) so you know how much to trust the prefilled fields. A **Location** row pre-selects wherever your last-added spool went (tap it to pick another location or create one in place), and one tap creates the spool with the RFID tag, weight, and codes on a single record. When the databases also know the same package's sibling code (the SKU printed next to the barcode, or vice versa), it's stored too — so either code on the box matches this roll on a future scan.
+
+After **Add to Inventory**, lifting the roll off the scale within a few seconds turns the card's Close button into a short **"Closing in 3…"** countdown — tap it to close now, or the **×** to keep the card open.
 
 ### No match? Find This Filament
 
-Barcode coverage is spotty per brand, and Amazon boxes often carry an Amazon code instead of the retail barcode (check the box for a second barcode). When no database recognizes a code, the primary action is **Find This Filament**: search your inventory and both community catalogs by text (e.g. `polymaker charcoal`) and pick the right product — the scanned barcode is linked to it, so the *next* scan of that code resolves instantly. **Add Basic Spool** and manual entry remain as fallbacks, and the scanned code is kept on the spool either way.
+Barcode coverage is spotty per brand, and Amazon boxes often carry an Amazon code instead of the retail barcode (check the box for a second barcode). When no database recognizes a code, the primary action is **Find This Filament**: search your inventory and both community catalogs by text (e.g. `polymaker charcoal`). Each result is one **purchasable package** — the 0.5 kg, 1 kg, and 3 kg boxes of the same color appear as separate rows with their weights — and the disclosure arrow on a row expands its full details, including every known code with a per-code refill marker, so near-identical results are tellable apart. Select a row and tap **Confirm**: the scanned code is linked to it, so the *next* scan of that code resolves instantly. **Add Basic Spool** and manual entry remain as fallbacks, and the scanned code is kept on the spool either way.
 
-### Refills
+### Refill packs
 
-Refill boxes (the bare coil sold without a spool) are detected automatically where the community databases know the refill barcode, and the flow pre-selects the refill option — with a warning if the measured weight doesn't look right for the choice (a "refill" that weighs like a full spool, or vice versa). Refill spools show a **Refill** badge in the inventory list and the spool editor.
+Refill boxes (the bare coil sold without a spool) are detected automatically where the community databases know the refill barcode, and the flow pre-selects the refill option — with a warning if the measured weight doesn't look right for the choice (a "refill" that weighs like a full spool, or vice versa). Spools bought as refills show a **Refill pack** badge in the inventory list and the spool editor; the badge records how the roll was purchased — mounting the coil on a reusable spool later is just a core-weight edit.
 
 ---
 
@@ -72,4 +74,4 @@ Works with both the built-in inventory and [Spoolman](../features/spoolman.md) m
 
 ## :material-web: In the web app
 
-Spools gain an editable **Barcode** field (spool form → Additional section), an optional Inventory column, the **Refill** badge, and barcodes round-trip through CSV import/export — see [Inventory → Barcodes](../features/inventory.md#barcodes). Desktop scanning hardware is not part of this feature.
+Spools gain editable **GTIN**, **SKU**, and **ASIN** fields (spool form → Additional section), all of them searchable — type a SKU like `17600` into the inventory search to find every roll of that product. An optional Inventory column shows a spool's codes, refill purchases carry the **Refill pack** badge, and the code fields round-trip through CSV import/export — see [Inventory → Barcodes](../features/inventory.md#barcodes). Desktop scanning hardware is not part of this feature.

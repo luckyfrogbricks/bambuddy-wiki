@@ -184,14 +184,16 @@ Custom materials work just like built-in ones for inventory tracking, usage hist
 
 ### Barcodes
 
-Barcodes are first-class spool data:
+Product codes are first-class spool data, stored in typed fields:
 
-- **Where they come from** — scanning a box on [SpoolBuddy](../spoolbuddy/barcode-scanner.md), or typing one into the spool form's **Barcode** field.
-- **How they resolve** — your own inventory first (instant, offline, exact — including sibling codes and archived spools), then the [Open Filament Database](https://openfilamentdatabase.org), then [SpoolmanDB-Community](https://github.com/Icezaza2543/SpoolmanDB-Community); the two external lookups are gated by the [Scan-to-Add Barcode Lookup](#scan-to-add-barcode-lookup) setting.
-- **In the inventory table** — an optional, sortable **Barcode** column (hidden by default; enable it from the column picker), plus the **Refill** badge on refill spools.
-- **CSV** — the barcode column round-trips through [CSV import/export](#csv-import-export). Values are canonicalized on import exactly like a form edit, files without the column import cleanly, and re-imported spools still resolve on a future scan.
+- **The fields** — **GTIN** (the retail barcode, validated by its check digit), **SKU** (the manufacturer article number), **ASIN** (for Amazon-native brands), and a free custom-code slot for codes nothing recognizes — including barcodes you print yourself.
+- **Where they come from** — scanning a box on [SpoolBuddy](../spoolbuddy/barcode-scanner.md) fills the scanned code's field and, when the databases know the same package, its sibling (scan the barcode, get the SKU for free); or type them into the spool form.
+- **How they resolve** — your own inventory first (instant, offline, exact — any stored code matches, archived spools included), then the [Open Filament Database](https://openfilamentdatabase.org), then [SpoolmanDB-Community](https://github.com/Icezaza2543/SpoolmanDB-Community); the two external lookups are gated by the [Scan-to-Add Barcode Lookup](#scan-to-add-barcode-lookup) setting.
+- **Search** — every code field is searchable: type a SKU like `17600` to find all rolls of that product.
+- **In the inventory table** — an optional, sortable **Barcode** column shows a spool's stored codes (hidden by default; enable it from the column picker), plus the **Refill pack** badge on spools bought as refills.
+- **CSV** — the code columns round-trip through [CSV import/export](#csv-import-export). Values are validated on import exactly like a form edit (a non-GTIN in the GTIN column is a row error), files without the columns import cleanly, and re-imported spools still resolve on a future scan.
 
-Barcode scanning works identically in Built-in Inventory and Spoolman modes — in Spoolman mode the barcode is stored on the Spoolman spool via extra fields.
+Code handling works identically in Built-in Inventory and Spoolman modes — in Spoolman mode the codes are stored on the Spoolman spool via extra fields.
 
 ### Printers Tab
 
